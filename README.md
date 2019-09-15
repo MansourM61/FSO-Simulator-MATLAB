@@ -8,4 +8,6 @@ Due to an unkown memory error, instead of using function in the code, I have use
 
 For more information about modesl refer to my thesis [A hybrid free space optics/radio frequency antenna - design and evaluation](http://nrl.northumbria.ac.uk/36012/) or the book [Optical Wireless Communications: System and Channel Modelling with MATLAB](https://uk.mathworks.com/academia/books/optical-wireless-communications-ghassemlooy.html).
 
+A brief document in (.\Documents\FSO Simulation.pdf) is also inlcuded to explain the equations and mathematics used in the simulation. 
+
 ![Screenshot](Screenshot.jpg)
