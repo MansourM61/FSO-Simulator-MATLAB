@@ -5,6 +5,7 @@
 % Writer: Mojtaba Mansour Abadi
 % Description: This code is simulating a free-space optical communication system.
 % The simulation parameters are defined in 'GlobalParameters.m' file.
+% To perform the simulation run 'FSO_System.m'.
 % The simulation can be done for various parameter sweeps.
 % In the 'Main Loop' section you can follow the steps from generating
 % random bits to extracting the bits from the received signal and
@@ -17,9 +18,9 @@
 % seperate file.
 %
 
-clc;
-clearvars;
-close all;
+clc;  % clean the command console
+clearvars;  % clean all variables in the workspace. Use 'clear all' for older versions of MATLAB
+close all;  % close all open figures, windows, etc.
 
 
 %% global parameters
@@ -281,51 +282,52 @@ run('.\\Codes\\FSChannelBER.m');  % calculating analytical BER over clear channe
 %% plotting Results
 Style = {'', 'o', '*', 's', '^', 'h', 'x', '+', 'd', 'v', '<', '>', 'p'};
 
-figure;
-hold on;
-box on;
+figure;  % create and empty figure window
+hold on;  % hold all plots
+box on;  % make the box around the axis visible
 
 Sim_Type = '';  % simulation type; used for changing the name of the output graph
 
-if((Turb_EN == false) && (PE_EN == false) && (FS_EN == false))
+% generate the proper plot title for each simulation scenario
+if((Turb_EN == false) && (PE_EN == false) && (FS_EN == false))  % clear channel case
     MarkerPlot(SNR_dB_Anl, BER_Anl_cl, 'b', '-', Style{1}, 10);
     str_par = 'clear channel';
     Sim_Type = '-Clear_Channel';  % adjust simulation type variable
-elseif((Turb_EN == false) && (PE_EN == false) && (FS_EN == true))
+elseif((Turb_EN == false) && (PE_EN == false) && (FS_EN == true))  % fog/smoke channel case
     MarkerPlot(SNR_dB_Anl, BER_Anl_fs, 'b', '-', Style{1}, 10);
     str_par = 'fog/smoke channel';
     Sim_Type = '-Fog_Channel';  % adjust simulation type variable
-elseif((Turb_EN == false) && (PE_EN == true))
+elseif((Turb_EN == false) && (PE_EN == true))  % pointing errors channel case
     MarkerPlot(SNR_dB_Anl, BER_Anl_PE, 'b', '-', Style{1}, 10);
     str_par = sprintf('pointing error channel with \\sigma_{j} = %4.2f', sig_j_PE);
     Sim_Type = '-PE_Channel';  % adjust simulation type variable
-elseif((Turb_EN == true) && (PE_EN == false) && strcmp(Turb_Mod, 'LN'))
+elseif((Turb_EN == true) && (PE_EN == false) && strcmp(Turb_Mod, 'LN'))  % log-normal turbulence channel case
     MarkerPlot(SNR_dB_Anl, BER_Anl_LN_turb, 'b', '-', Style{1}, 10);
     str_par = sprintf('turbulence channel (Log-Normal model) with \\sigma_{R}^2 = %4.2f', sig2_R_Sim);
     Sim_Type = '-LN_Channel';  % adjust simulation type variable
-elseif((Turb_EN == true) && (PE_EN == false) && strcmp(Turb_Mod, 'GG'))
+elseif((Turb_EN == true) && (PE_EN == false) && strcmp(Turb_Mod, 'GG'))  % gamma-gamma turbulence channel case
     MarkerPlot(SNR_dB_Anl, BER_Anl_GG_turb, 'b', '-', Style{1}, 10);
     str_par = sprintf('turbulence channel (Gamma-Gamma model) with \\sigma_{R}^2 = %4.2f', sig2_R_Sim);
     Sim_Type = '-GG_Channel';  % adjust simulation type variable
-elseif((Turb_EN == true) && (PE_EN == true) && strcmp(Turb_Mod, 'LN'))
+elseif((Turb_EN == true) && (PE_EN == true) && strcmp(Turb_Mod, 'LN'))  % log-normal turbulence + pointing errors channel case
     MarkerPlot(SNR_dB_Anl, BER_Anl_PE_LN_turb, 'b', '-', Style{1}, 10);
     str_par = sprintf(['turbulence channel (Log-Normal model) with \\sigma_{R}^2 = %4.2f\n'...
         'and pointing error channel with \\sigma_{j} = %4.2f'], sig2_R_Sim, sig_j_PE);
     Sim_Type = '-LN_PE_Channel';  % adjust simulation type variable
-elseif((Turb_EN == true) && (PE_EN == true) && strcmp(Turb_Mod, 'GG'))
+elseif((Turb_EN == true) && (PE_EN == true) && strcmp(Turb_Mod, 'GG'))  % gamma-gamma turbulence + pointing errors channel case
     MarkerPlot(SNR_dB_Anl, BER_Anl_PE_GG_turb, 'b', '-', Style{1}, 10);
     str_par = sprintf(['turbulence channel (Gamma-Gamma model) with \\sigma_{R}^2 = %4.2f\n'...
         'and pointing error channel with \\sigma_{j} = %4.2f'], sig2_R_Sim, sig_j_PE);
     Sim_Type = '-GG_PE_Channel';  % adjust simulation type variable
 end
 
-MarkerPlot(SNR_dB_Sim, BER_Sim, 'r', '--', Style{2}, 10);
-Dummy = BER_Sim(BER_Sim > 0);
-axis([SNR_dB_Sim(1), SNR_dB_Sim(end), min(Dummy), 1]);
-xlabel('SNR (dB)');
-ylabel('BER');
+MarkerPlot(SNR_dB_Sim, BER_Sim, 'r', '--', Style{2}, 10);  % plot BER vs. SNR curve
+Dummy = BER_Sim(BER_Sim > 0);  % isolate non-zero BER values
+axis([SNR_dB_Sim(1), SNR_dB_Sim(end), min(Dummy), 1]);  % auto adjust the plot axis
+xlabel('SNR (dB)');  % label x axis
+ylabel('BER');  % label y axis
 
-str_title = sprintf('BER vs. SNR for %s', str_par);
-title(str_title);
+str_title = sprintf('BER vs. SNR for %s', str_par);  % forma the title text
+title(str_title);  % create the title
 
-MakeitPretty(gcf, [10, 9], ['L', 'G'], [12, 1.5, 5, 10], ['.\\Graphs\\BER_SNR', Sim_Type]);
+MakeitPretty(gcf, [10, 9], ['L', 'G'], [12, 1.5, 5, 10], ['.\\Graphs\\BER_SNR', Sim_Type]);  % format the plot
