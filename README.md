@@ -13,3 +13,5 @@ For more information about models refer to my thesis [A hybrid free space optics
 A brief document (.\Documents\FSO Simulation.pdf) is also included to explain the equations and mathematics used in the simulation. 
 
 ![Screenshot](Screenshot.jpg)
+
+### Note: to run the code, you need to have all folders except "documents" on your local storage.
