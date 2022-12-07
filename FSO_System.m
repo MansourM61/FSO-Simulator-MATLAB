@@ -83,7 +83,7 @@ for Index = 1:Loop_Order
         % laser modulation part 2
         % generating output optical signal based on generated OOK signal
         % and calculated power levels
-        Laser_Sim_Out = DelP_Sim*(Signal_Sim_Out - Sig_Level);  % generate laser output (W)
+        Laser_Sim_Out = DelP_Sim*(Signal_Sim_Out - Sig_Level);  % generate laser output signal. It is the ac section of laser output power (average power is remoived).
         Sig_Sim_Power = var(Laser_Sim_Out);  % measure the signal power
         clear Signal_Sim_Out;  % relesse the memory
         
